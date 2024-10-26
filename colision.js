@@ -96,6 +96,14 @@ class Circle {
             }
         }
     }
+
+    // Método para comprobar si el clic está dentro del círculo
+    isClicked(mouseX, mouseY) {
+        let distX = this.posX - mouseX;
+        let distY = this.posY - mouseY;
+        let distance = Math.sqrt(distX * distX + distY * distY);
+        return distance < this.radius;
+    }
 }
 
 // Crear un array para almacenar N círculos
@@ -122,6 +130,20 @@ function animate() {
     });
     requestAnimationFrame(animate); // Repetir la animación
 }
+
+// Evento para detectar el clic del mouse
+canvas.addEventListener("click", function(event) {
+    // Obtener las coordenadas del mouse relativas al canvas
+    const mouseX = event.clientX - canvas.offsetLeft;
+    const mouseY = event.clientY - canvas.offsetTop;
+
+    // Recorrer el array de círculos y eliminar el que fue clickeado
+    for (let i = circles.length - 1; i >= 0; i--) {
+        if (circles[i].isClicked(mouseX, mouseY)) {
+            circles.splice(i, 1); // Eliminar el círculo del array
+        }
+    }
+});
 
 // Generar N círculos y comenzar la animación
 generateCircles(10); // Puedes cambiar el número de círculos aquí
